@@ -37,7 +37,7 @@ const FormClient = () => {
     const postClient = async () => {
         const headers = {
             "Content-Type": "application/json",
-            'x-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmU3MTcyNzZiZjhmM2VhNTA4NTUxOGMiLCJpYXQiOjE2NjA3ODg0NjAsImV4cCI6MTY2MDgzMTY2MH0.JexbTyBotYcrU6eZd_Q56tmZVHjMcJXITlXEOMX1Hm4"
+            'x-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmU3MTcyNzZiZjhmM2VhNTA4NTUxOGMiLCJpYXQiOjE2NjA4NDM5MzEsImV4cCI6MTY2MDg4NzEzMX0.V60hc60JaH1hjTUPjo-WqkjmtgSUHyWaT16QXx66klo"
         }
         const resp = await axios.post('https://restserver-lautaro-quevedo.herokuapp.com/api/clients', formData, { headers })
             .then(res => {
