@@ -1,0 +1,8 @@
+.bg-input{
+    background-color: rgb(161, 161, 161);
+    color: white;
+}
+.bg-input::placeholder{
+    color: white;
+    font-weight: 500;
+}
