@@ -33,9 +33,8 @@ const ClientsPage = () => {
             <h1 className='mb-3'>Lista de Clientes</h1>
             <Container fluid>
                 <Button onClick={() => navigate('/newclient', { clients })}><i class="fa-solid fa-plus"></i></Button>
-                <Col className="mb-3">
-                    <Form.Label>Tipo de Contribuyente</Form.Label>
-                    <Form.Select className='bg-input' name='tipoDeContribuyente' onChange={handleChange}>
+                <Col className="mb-3 mt-3">
+                    <Form.Select className='bg-input' onChange={handleChange}>
                         <option value="nombre">Nombre</option>
                         <option value="apellido">Apellido</option>
                         <option value="cuilcuit">CUIL/CUIT</option>
