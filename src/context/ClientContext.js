@@ -46,7 +46,8 @@ const ordenar = () => {
     setSorted,
     ordenar,
     optionOrder, 
-    setOptionOrder
+    setOptionOrder,
+    getClients
   }
 
   return (

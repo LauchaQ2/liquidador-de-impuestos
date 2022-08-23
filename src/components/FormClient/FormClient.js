@@ -1,13 +1,19 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Container, Col, Form, Row, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 import ClientContext from '../../context/ClientContext';
 import './FormClient.css';
 
 const FormClient = () => {
 
-    const { clients, setClients } = useContext(ClientContext)
+    const { clients, setClients, getClients } = useContext(ClientContext)
+
+    const [inputSede, setInputSede] = useState([
+        {id: uuidv4(),
+        sede: ''}
+    ])
 
     const [formData, setFormData] = useState({
         nombre: '',
@@ -22,10 +28,14 @@ const FormClient = () => {
         entidadBancaria: '',
         domicilioReal: '',
         domicilioLegal: '',
-        sedeDeExplotacion: '',
         agencia: '',
-        claveDeAcceso: ''
+        claveDeAcceso: '',
+        sedeDeExplotacion: ''
     })
+
+    useEffect(() => {
+        formData.sedeDeExplotacion = inputSede
+    }, [inputSede]);
 
 
     const handleChange = (e) => {
@@ -33,20 +43,46 @@ const FormClient = () => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
     }
+    const handleChange2 = (id,e) => {
+        e.preventDefault();
+        const { name, value } = e.target
+        // setFormData({ ...prevstate, sedeDeExplotacion: {...sedeDeExplotacion, [name]: value }})
+        // setFormData(prevState => ({
+        //     ...prevState,
+        //     sedeDeExplotacion: {
+        //         id: id,
+        //         [name]: value
+        //     }
+        // }))
+        const newInputFields = inputSede.map(i => {
+            if(id === i.id) {
+              i[e.target.name] = e.target.value
+            }
+            return i;
+          })
+          setInputSede(newInputFields);
+    }
     console.log(formData)
+    console.log(inputSede)
 
     const postClient = async () => {
         const headers = {
             "Content-Type": "application/json",
-            'x-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmU3MTcyNzZiZjhmM2VhNTA4NTUxOGMiLCJpYXQiOjE2NjA4NDM5MzEsImV4cCI6MTY2MDg4NzEzMX0.V60hc60JaH1hjTUPjo-WqkjmtgSUHyWaT16QXx66klo"
+            'x-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmU3MTcyNzZiZjhmM2VhNTA4NTUxOGMiLCJpYXQiOjE2NjEyMDgzODgsImV4cCI6MTY2MTQ2NzU4OH0.FGdjanSpTIVMz9H-AlKcTBaorJC7JXKHtchTN158ARI"
         }
         const resp = await axios.post('https://restserver-lautaro-quevedo.herokuapp.com/api/clients', formData, { headers })
             .then(res => {
                 console.log(res)
+                getClients()
             })
             .catch(err => {
                 console.log(err)
             })
+    }
+
+    const Add =()=>{
+        setInputSede([...inputSede, {id: uuidv4() , sede: ''}])
+        console.log(inputSede)
     }
 
     return (
@@ -117,10 +153,14 @@ const FormClient = () => {
                         </Col>
                     </Row>
                     <Row className="mb-3">
-                        <Col className="mb-3">
+                        {inputSede.map((input, index) =>{
+                            return(
+                            <Col key={index} id='sedeExp' className="mb-3">
                             <Form.Label>Sede de explotación</Form.Label>
-                            <Form.Control className='bg-input' name='sedeDeExplotacion' placeholder="Sede de Expotación" onChange={handleChange} />
-                        </Col>
+                            <Form.Control className='bg-input' name="sede" placeholder="Sede de Expotación" onChange={e => handleChange2(input.id,e)} />
+                            <Button onClick={()=>{Add(index)}}>+</Button>
+                        </Col>)
+                        })}
                         <Col className="mb-3">
                             <Form.Label>Agencia</Form.Label>
                             <Form.Select name='agencia' className='bg-input' onChange={handleChange}>
